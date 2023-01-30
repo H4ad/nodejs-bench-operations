@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -36,5 +37,8 @@ suite.add('Length = 100 - Array.at', function () {
 .on('start', function() {
   console.log(H2('Get the last item of an Array'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

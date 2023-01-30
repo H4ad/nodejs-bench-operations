@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
-const suite = new Benchmark.Suite;
+const suite = new Benchmark.Suite(__filename);
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events')
 
 const tableHeader = createTableHeader([
   'name',
@@ -16,6 +17,9 @@ suite.add('new Date().getTime()', function () {
 })
 .on('cycle', function(event) {
   console.log(eventToMdTable(event))
+})
+.on('complete', function () {
+  onBenchComplete(this)
 })
 .on('start', function() {
   console.log(H2('Getting unix time'))

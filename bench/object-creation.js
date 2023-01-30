@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 function Empty() {}
 Empty.prototype = Object.create(null)
@@ -35,5 +36,8 @@ suite.add('Object.create(null)', function () {
 .on('start', function() {
   console.log(H2('Object Creation'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

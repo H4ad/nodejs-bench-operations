@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
 const suite = new Benchmark.Suite;
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -33,5 +34,8 @@ suite.add('Sort using default', function () {
 .on('start', function() {
   console.log(H2('Sorting Map'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

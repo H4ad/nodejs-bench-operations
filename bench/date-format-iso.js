@@ -2,6 +2,7 @@ const Benchmark = require('benchmark')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
 const { fromUnixToISOString } = require('../utils/from-unix-to-iso-string');
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -21,5 +22,8 @@ suite.add('new Date().toISOString()', function () {
 .on('start', function() {
   console.log(H2('Date toISOString'))
   console.log(tableHeader)
+})
+.on('complete', function () {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

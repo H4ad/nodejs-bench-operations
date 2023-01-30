@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
 const suite = new Benchmark.Suite;
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -38,6 +39,9 @@ suite.add('Using super', function () {
 })
 .on('cycle', function(event) {
   console.log(eventToMdTable(event))
+})
+.on('complete', function () {
+  onBenchComplete(this)
 })
 .on('start', function() {
   console.log(H2('Super vs This'))

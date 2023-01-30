@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -50,5 +51,8 @@ suite.add('[True conditional] Using instanceof only', function () {
 .on('start', function() {
   console.log(H2('Comparison using `instanceof`'))
   console.log(tableHeader)
+})
+.on('complete', function () {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

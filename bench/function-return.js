@@ -1,6 +1,7 @@
 const Benchmark = require('benchmark')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -54,5 +55,8 @@ suite.add('Function returning null', function () {
 .on('start', function() {
   console.log(H2('Function return'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

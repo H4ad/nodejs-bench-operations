@@ -3,6 +3,7 @@ const { versions } = require('process')
 const semver = require('semver')
 const suite = new Benchmark.Suite;
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -34,5 +35,8 @@ suite.add('Using replace(//g)', function () {
 .on('start', function() {
   console.log(H2('replace vs replaceAll comparison'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': false });

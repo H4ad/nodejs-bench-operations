@@ -6,6 +6,7 @@ const PrivateSymbol = require('privsym');
 const pkWidth = PrivateSymbol('width');
 const pkHeight = PrivateSymbol('height');
 const { eventToMdTable, H2, createTableHeader } = require('../markdown')
+const { onBenchComplete } = require('../events');
 
 const tableHeader = createTableHeader([
   'name',
@@ -142,5 +143,8 @@ suite.add('Raw usage private field', function () {
 .on('start', function() {
   console.log(H2('Private Property'))
   console.log(tableHeader)
+})
+.on('complete', function() {
+  onBenchComplete(this)
 })
 .run({ 'async': true });
